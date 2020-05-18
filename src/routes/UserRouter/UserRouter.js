@@ -16,6 +16,6 @@ UserRouter
                     user: dbUser
                 });
             });
-    })
+    });
 
 module.exports = UserRouter;
