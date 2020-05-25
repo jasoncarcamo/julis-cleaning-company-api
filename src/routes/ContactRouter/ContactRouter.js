@@ -31,15 +31,8 @@ ContactRouter
                 });
             };
         };
-
-        console.log(req.headers)
-
-        if(req.method === "OPTIONS"){
-            return;
-        }
-
         
-        const mailOptions = {
+        const clientMailOptions = {
             from: "jasoncarcamo30@yahoo.com",
             to: newMessage.email,
             subject: "Thank you for contacting us",
@@ -51,25 +44,43 @@ ContactRouter
             </main>`
         };
 
+        const adminMailOptions = {
+            from: "juliscleaningcompany@gmail.com",
+            to: "juliscleaningcompany@gmail.com",
+            subject: "Julis Cleaning Company Client",
+            html: `<main style="text-align: center;">
+
+                <p>${newMessage.email} has contacted you using your contact form on your website.</p>
+                <p><strong>Mobile number:</strong> ${newMessage.mobile_number}</p>
+                <p><strong>Message:</strong> ${newMessage.message}</p>
+            </main>`
+        };
+
         ContactsService.createContact(req.app.get("db"), newMessage)
             .then( createdContact =>{
 
-                transporter.sendMail( mailOptions, ( error, info)=>{
+                transporter.sendMail( clientMailOptions, ( error, info)=>{
                     if(error){
-                        console.log(error)
-                    };
-        
-                    if(info){
-                        console.log(info)
-                        
-                        return res.status(200).json({
-                            createContact
+
+                        return res.status(400).json({
+                            error
                         });
                     };
-        
-                });
-            })
+                    
+                    transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
+                        if(secondErr){
 
+                            return res.status(400).json({
+                                error: secondErr
+                            });
+                        };
+    
+                        return res.status(200).json({
+                            sent: secondInfo
+                        });    
+                    })
+                });
+            });
     })
 
 module.exports = ContactRouter;
