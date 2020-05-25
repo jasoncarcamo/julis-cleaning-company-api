@@ -62,7 +62,7 @@ RegisterRouter
             .then( dbUser => {
 
                 if(dbUser){
-                    
+
                     return res.status(400).json({
                         error: `User with email: ${newUser.email} already exists`
                     });
@@ -81,8 +81,9 @@ RegisterRouter
                             };
 
                             transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
+                                
                                 if(secondErr){
-        
+
                                     return res.status(400).json({
                                         error: secondErr
                                     });
