@@ -10,6 +10,7 @@ const LoginRouter = require("../routes/LoginRouter/LoginRouter");
 const UserRouter = require("../routes/UserRouter/UserRouter");
 const BookingsRouter = require("../routes/BookingsRouter/BookingsRouter");
 const ContactRouter = require("../routes/ContactRouter/ContactRouter");
+const SubscribeRouter = require("../routes/SubscribeRouter/SubscribeRouter");
 
 app.use(morgan((NODE_ENV === "production") ? "tiny" : "common"));
 app.use(express.static("public"));
@@ -24,6 +25,8 @@ app.use("/api", LoginRouter);
 app.use("/api", UserRouter);
 app.use("/api", BookingsRouter);
 app.use("/api", ContactRouter);
+app.use("/api", SubscribeRouter);
+
 
 app.use(function errorHandler(error, req, res, next) {
     let response;
