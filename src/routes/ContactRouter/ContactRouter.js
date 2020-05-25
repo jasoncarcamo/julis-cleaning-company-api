@@ -20,12 +20,10 @@ ContactRouter
             mobile_number,
             message
         };
-        
-        console.log(newMessage)
 
         for( const [key, value] of Object.entries(newMessage)){
             if(value === "" || value === undefined){
-                console.log(key)
+
                 return res.status(400).json({
                     error: `Missing ${key} in body request`
                 });

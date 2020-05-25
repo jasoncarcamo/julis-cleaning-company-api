@@ -2,6 +2,7 @@ const express = require("express");
 const BookingsRouter = express.Router();
 const BookingsService = require("./BookingsService");
 const {requireAuth} = require("../../middleware/jwtAuth");
+const transporter = require("../../Services/nodemailer/nodemailer");
 
 BookingsRouter
     .route("/bookings")
@@ -35,8 +36,7 @@ BookingsRouter
         };
 
         for(const [key, value] of Object.entries(newBookings)){
-            console.log(value == null)
-            console.log(value == "")
+            
             if(value === undefined || value === null || value == ""){
                 return res.status(400).json({
                     error: `Missing ${key} in contact info form.`
@@ -49,9 +49,64 @@ BookingsRouter
         BookingsService.createBookings(req.app.get("db"), newBookings)
             .then( createdBookings => {
 
-                return res.status(200).json({
-                    createdBookings
+                const clientMailOptions = {
+                    from: "juliscleaningcompany@gmail.com",
+                    to: newBookings.email,
+                    subject: "Julis Cleaning Company Quote Request",
+                    html: `<main style="text-align: center;">
+                        <h2>Hello ${req.user.first_name} ${req.user.last_name}</h2>
+        
+                        <p>Thank you for requesting a quote. We have squeezed you into our calender! You will recieve a call from our team member to discuss prices depending on your needs.</p>
+
+                        <p><strong>Mobile number:</strong> ${newBookings.mobile_number}</p>
+
+                        <p><strong>Email:</strong> ${newBookings.email}</p>
+
+                        <p><strong>Your message to us:</strong> ${newBookings.message}</p>
+                    </main>`
+                };
+        
+                const adminMailOptions = {
+                    from: "juliscleaningcompany@gmail.com",
+                    to: "juliscleaningcompany@gmail.com",
+                    subject: "Julis Cleaning Company Client",
+                    html: `<main style="text-align: center;">
+        
+                        <p>${newBookings.email} has requested a quote using your bookings form on your website.</p>
+
+                        <p><strong>Name:</strong> ${req.user.first_name} ${req.user.last_name}</p>
+
+                        <p><strong>Mobile number:</strong> ${newBookings.mobile_number}</p>
+
+                        <p><strong>Set for:</strong> ${new Date(newBookings.date).toDateString()} at ${newBookings.time}</p>
+
+                        <p><strong>Message:</strong> ${newBookings.message}</p>
+                    </main>`
+                };
+
+                transporter.sendMail( clientMailOptions, ( error, info)=>{
+                    if(error){
+
+                        return res.status(400).json({
+                            error
+                        });
+                    };
+                    
+                    transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
+                        if(secondErr){
+
+                            return res.status(400).json({
+                                error: secondErr
+                            });
+                        };
+    
+                        return res.status(200).json({
+                            sent: secondInfo,
+                            createdBookings
+                        });    
+                    })
                 });
+
             })
     })
 
