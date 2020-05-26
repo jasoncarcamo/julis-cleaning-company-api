@@ -172,7 +172,7 @@ BookingsRouter
                     subject: "Julis Cleaning Company Client",
                     html: `<main style="text-align: center;">
         
-                        <p>${newBookings.email} has requested a quote using your bookings form on your website.</p>
+                        <p>${newBookings.email} has requested a quote as a guest, using your bookings form on your website.</p>
 
                         <p><strong>Name:</strong> ${newBookings.first_name} ${newBookings.last_name}</p>
 
