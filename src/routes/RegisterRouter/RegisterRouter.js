@@ -83,7 +83,7 @@ RegisterRouter
                             transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
                                 
                                 if(secondErr){
-
+                                    console.log(secondErr)
                                     return res.status(400).json({
                                         error: secondErr
                                     });
