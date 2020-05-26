@@ -82,7 +82,7 @@ BookingsRouter
 
                         <p><strong>Set for:</strong> ${new Date(newBookings.date).toDateString()} at ${newBookings.time}</p>
 
-                        <p><strong>Message:</strong> ${newBookings.message}</p>
+                        <p><strong>Message ( Looking to get done):</strong> ${newBookings.message}</p>
                     </main>`
                 };
 
@@ -146,7 +146,7 @@ BookingsRouter
 
         BookingsService.createBookings(req.app.get("db"), newBookings)
             .then( createdBookings => {
-
+                
                 const clientMailOptions = {
                     from: "juliscleaningcompany@gmail.com",
                     to: newBookings.email,
@@ -174,13 +174,13 @@ BookingsRouter
         
                         <p>${newBookings.email} has requested a quote as a guest, using your bookings form on your website.</p>
 
-                        <p><strong>Name:</strong> ${newBookings.first_name} ${newBookings.last_name}</p>
+                        <p><strong>Name:</strong> ${newBookings.name}</p>
 
                         <p><strong>Mobile number:</strong> ${newBookings.mobile_number}</p>
 
                         <p><strong>Set for:</strong> ${new Date(newBookings.date).toDateString()} at ${newBookings.time}</p>
 
-                        <p><strong>Message:</strong> ${newBookings.message}</p>
+                        <p><strong>Message ( Looking to get done):</strong> ${newBookings.message}</p>
                     </main>`
                 };
 
