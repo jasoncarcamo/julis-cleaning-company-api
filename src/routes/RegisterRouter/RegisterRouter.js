@@ -49,12 +49,12 @@ RegisterRouter
             subject: "Julis Cleaning Company Client",
             html: `<main style="text-align: center;">
 
-                <p>${newUser.email} has sign up to your website!</p>
+                <p>${newUser.email} has signed up to your website!</p>
 
                 <p><strong>Name:</strong> ${newUser.first_name} ${newUser.last_name}</p>
 
                 <p><strong>Mobile number:</strong> ${newUser.mobile_number}</p>
-                <p><strong>Email:</strong> ${newUser.mobile_number}</p>
+                <p><strong>Email:</strong> ${newUser.email}</p>
             </main>`
         };
 
@@ -83,7 +83,7 @@ RegisterRouter
                             transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
                                 
                                 if(secondErr){
-                                    
+
                                     return res.status(400).json({
                                         error: secondErr
                                     });
