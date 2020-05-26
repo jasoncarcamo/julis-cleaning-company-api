@@ -141,7 +141,7 @@ BookingsRouter
         };
 
         newBookings.user_id = 1;
-
+        console.log(newBookings)
         BookingsService.createBookings(req.app.get("db"), newBookings)
             .then( createdBookings => {
 
@@ -182,7 +182,7 @@ BookingsRouter
 
                 transporter.sendMail( clientMailOptions, ( error, info)=>{
                     if(error){
-
+                        console.log(error, "first")
                         return res.status(400).json({
                             error
                         });
@@ -190,7 +190,7 @@ BookingsRouter
                     
                     transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
                         if(secondErr){
-
+                            console.log(secondErr, "second")
                             return res.status(400).json({
                                 error: secondErr
                             });
