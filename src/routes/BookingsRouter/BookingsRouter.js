@@ -58,6 +58,8 @@ BookingsRouter
         
                         <p>Thank you for requesting a quote. We have squeezed you into our calender! You will recieve a call from our team member to discuss prices depending on your needs.</p>
 
+                        <p><strong>Set for:</strong> ${new Date(newBookings.date).toDateString()} at ${newBookings.time}</p>
+
                         <p><strong>Mobile number:</strong> ${newBookings.mobile_number}</p>
 
                         <p><strong>Email:</strong> ${newBookings.email}</p>
@@ -141,7 +143,7 @@ BookingsRouter
         };
 
         newBookings.user_id = 1;
-        console.log(newBookings)
+
         BookingsService.createBookings(req.app.get("db"), newBookings)
             .then( createdBookings => {
 
@@ -150,9 +152,11 @@ BookingsRouter
                     to: newBookings.email,
                     subject: "Julis Cleaning Company Quote Request",
                     html: `<main style="text-align: center;">
-                        <h2>Hello ${newBookings.first_name} ${newBookings.last_name}</h2>
+                        <h2>Hello ${newBookings.name}</h2>
         
                         <p>Thank you for requesting a quote. We have squeezed you into our calender! You will recieve a call from our team member to discuss prices depending on your needs.</p>
+
+                        <p><strong>Set for:</strong> ${new Date(newBookings.date).toDateString()} at ${newBookings.time}</p>
 
                         <p><strong>Mobile number:</strong> ${newBookings.mobile_number}</p>
 
@@ -182,7 +186,7 @@ BookingsRouter
 
                 transporter.sendMail( clientMailOptions, ( error, info)=>{
                     if(error){
-                        console.log(error, "first")
+
                         return res.status(400).json({
                             error
                         });
@@ -190,7 +194,7 @@ BookingsRouter
                     
                     transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
                         if(secondErr){
-                            console.log(secondErr, "second")
+                            
                             return res.status(400).json({
                                 error: secondErr
                             });
