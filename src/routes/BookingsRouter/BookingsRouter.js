@@ -140,7 +140,7 @@ BookingsRouter
             }
         };
 
-        newBookings.user_id = 0;
+        newBookings.user_id = 1;
 
         BookingsService.createBookings(req.app.get("db"), newBookings)
             .then( createdBookings => {
