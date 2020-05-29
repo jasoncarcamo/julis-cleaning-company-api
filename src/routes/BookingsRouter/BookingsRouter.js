@@ -8,13 +8,13 @@ BookingsRouter
     .route("/bookings")
     .all(requireAuth)
     .get((req, res)=>{
-        BookingsService.getUsersBooking(req.app.get("db"), req.user.id)
+        BookingsService.getBookings(req.app.get("db"))
             .then( bookings => {
 
                 return res.status(200).json({
                     bookings
                 });
-            })
+            });
     })
     .post((req, res)=>{
         let {

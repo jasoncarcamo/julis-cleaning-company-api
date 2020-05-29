@@ -34,12 +34,11 @@ RegisterRouter
         /*const clientMailOptions = {
             from: "jasoncarcamo30@yahoo.com",
             to: newUser.email,
-            subject: "Thank you for contacting us",
+            subject: "Thank you for signing up",
             html: `<main style="text-align: center;">
-                <h2>Hello ${newMessage.name}</h2>
+                <h2>Hello ${newUser.first_name} ${newUser.last_name}</h2>
 
                 <p>You will recieve a call from our customer representive, thank you!</p>
-                <p>Your message to us: ${newMessage.message}</p>
             </main>`
         };*/
 

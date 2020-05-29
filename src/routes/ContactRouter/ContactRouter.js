@@ -2,9 +2,19 @@ const express = require("express");
 const ContactRouter = express.Router();
 const transporter = require("../../Services/nodemailer/nodemailer");
 const ContactsService = require("./ContactsService");
+const {requireAuth} = require("../../middleware/jwtAuth");
 
 ContactRouter
     .route("/contact")
+    .get(requireAuth, (req, res)=>{
+        ContactsService.getContacts(req.app.get("db"))
+            .then( contacts => {
+
+                return res.status(200).json({
+                    contacts
+                });
+            });
+    })
     .post((req, res)=>{
         
         let {

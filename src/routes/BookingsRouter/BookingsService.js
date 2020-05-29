@@ -1,4 +1,7 @@
 const BookingsService = {
+    getBookings(db){
+        return db.select("*").from("bookings");
+    },
     getUsersBooking(db, user_id){
         return db.select("*").from("bookings").where({user_id});
     },
