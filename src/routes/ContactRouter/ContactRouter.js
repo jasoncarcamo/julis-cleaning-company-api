@@ -92,10 +92,51 @@ ContactRouter
                 });
                 */
 
+                const io = req.app.get("io");
+
+                io.sockets.emit('contact', createdContact);
+
                 return res.status(200).json({
                     createdContact
-                })
+                });
             });
+    })
+
+ContactRouter
+    .route("/contact/:id")
+    .all(requireAuth)
+    .patch((req, res)=>{
+        let {
+            id,
+            name,
+            email,
+            mobile_number,
+            message,
+            viewed
+        } = req.body;
+
+        const updateContact = {
+            id,
+            name,
+            email,
+            mobile_number,
+            message,
+            viewed
+        };
+
+        for( const [key, value] of Object.entries(updateContact)){
+            if(value === undefined || value === ""){
+                delete updateContact[key];
+            };
+        };
+
+        ContactsService.updateContact(req.app.get("db"), updateContact, req.params.id)
+            .then( updatedContact => {
+                
+                return res.status(200).json({
+                    updatedContact
+                });
+            });        
     })
 
 module.exports = ContactRouter;

@@ -3,5 +3,7 @@ CREATE TABLE contacts (
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     mobile_number TEXT NOT NULL,
-    message TEXT NOT NULL
+    message TEXT NOT NULL,
+    date_created TIMESTAMP DEFAULT now() NOT NULL,
+    viewed BOOLEAN DEFAULT FALSE NOT NULL
 );  
