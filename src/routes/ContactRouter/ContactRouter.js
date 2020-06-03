@@ -28,7 +28,8 @@ ContactRouter
             name,
             email,
             mobile_number,
-            message
+            message,
+            date_created: new Date()
         };
 
         for( const [key, value] of Object.entries(newMessage)){
@@ -112,7 +113,8 @@ ContactRouter
             email,
             mobile_number,
             message,
-            viewed
+            viewed,
+            confirmed
         } = req.body;
 
         const updateContact = {
@@ -121,7 +123,8 @@ ContactRouter
             email,
             mobile_number,
             message,
-            viewed
+            viewed,
+            confirmed
         };
 
         for( const [key, value] of Object.entries(updateContact)){
@@ -132,7 +135,7 @@ ContactRouter
 
         ContactsService.updateContact(req.app.get("db"), updateContact, req.params.id)
             .then( updatedContact => {
-                
+
                 return res.status(200).json({
                     updatedContact
                 });

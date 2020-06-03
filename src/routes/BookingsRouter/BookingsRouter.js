@@ -32,7 +32,8 @@ BookingsRouter
             name,
             email,
             mobile_number,
-            message
+            message,
+            date_created: new Date()
         };
 
         for(const [key, value] of Object.entries(newBookings)){
@@ -130,7 +131,8 @@ BookingsRouter
             name,
             email,
             mobile_number,
-            message
+            message,
+            date_created: new Date()
         };
 
         for(const [key, value] of Object.entries(newBookings)){
@@ -147,6 +149,7 @@ BookingsRouter
         BookingsService.createBookings(req.app.get("db"), newBookings)
             .then( createdBookings => {
                 
+                /*
                 const clientMailOptions = {
                     from: "juliscleaningcompany@gmail.com",
                     to: newBookings.email,
@@ -199,6 +202,10 @@ BookingsRouter
                                 error: secondErr
                             });
                         };
+
+                        const io = req.app.get("io");
+
+                        io.sockets.emit('bookings', createdBookings);
     
                         return res.status(200).json({
                             sent: secondInfo,
@@ -206,12 +213,59 @@ BookingsRouter
                         });    
                     });
                 });
+                */
+
+               const io = req.app.get("io");
+
+               io.sockets.emit('bookings', createdBookings);
+
+               return res.status(200).json({
+                   createdBookings
+               }); 
+               
             })
     })
 
 BookingsRouter
     .route("/bookings/:id")
     .all(requireAuth)
+    .patch((req, res)=>{
+        let {
+            date,
+            time,
+            name,
+            email,
+            mobile_number,
+            message,
+            viewed,
+            confirmed
+        } = req.body;
+
+        const updateBook = {
+            date,
+            time,
+            name,
+            email,
+            mobile_number,
+            message,
+            viewed,
+            confirmed
+        };
+
+        for(const [key, value] of Object.entries(updateBook)){
+            if(value === undefined || value === ""){
+                delete updateBook[key];
+            };
+        };
+
+        BookingsService.updateBookings(req.app.get("db"), updateBook, req.params.id)
+            .then( updatedBook => {
+                
+                return res.status(200).json({
+                    updatedBook
+                });
+            });
+    })
     .delete((req, res)=>{
         BookingsService.deleteBookings(req.app.get("db"), req.params.id)
             .then( deletedBook =>{

@@ -7,5 +7,8 @@ CREATE TABLE bookings (
     mobile_number TEXT NOT NULL,
     message TEXT NOT NULL,
     date_created TIMESTAMP DEFAULT now() NOT NULL,
+    viewed BOOLEAN DEFAULT FALSE NOT NULL,
+    confirmed BOOLEAN DEFAULT FALSE NOT NULL,
+    confirmed_info TIMESTAMP,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL
 );

@@ -12,4 +12,4 @@ INSERT INTO users
 ( first_name, last_name, email, mobile_number, password)
 VALUES
 ( 'Admin', 'admin', 'juliscleaningcompany@gmail.com', '6315263306', '$2a$12$0NFNgwx3HVMr7H1Nx8yGJ.crOOrqWdYSAOMg1WkFNHaBQVPIXVWZe'),
-( 'Guest', 'guest', 'guest@guest.com', '9999999999', 'Password1!')
+( 'Guest', 'guest', 'guest@guest.com', '9999999999', 'Password1!');

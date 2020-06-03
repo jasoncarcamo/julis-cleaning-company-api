@@ -5,5 +5,7 @@ CREATE TABLE contacts (
     mobile_number TEXT NOT NULL,
     message TEXT NOT NULL,
     date_created TIMESTAMP DEFAULT now() NOT NULL,
-    viewed BOOLEAN DEFAULT FALSE NOT NULL
+    viewed BOOLEAN DEFAULT FALSE NOT NULL,
+    confirmed BOOLEAN DEFAULT FALSE NOT NULL,
+    confirmed_info TIMESTAMP
 );  
