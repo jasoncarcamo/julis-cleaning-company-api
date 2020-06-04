@@ -25,7 +25,7 @@ ExpoTokenRouter
 
         if(newToken.expo_token === undefined || newToken.expo_token === ""){
             return res.status(400).json({
-                error: "Missing expo_token in body request";
+                error: "Missing expo_token in body request"
             });
         };
 
