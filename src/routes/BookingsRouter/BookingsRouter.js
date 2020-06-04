@@ -220,7 +220,7 @@ BookingsRouter
                .then( expoTokens => {
                    const io = req.app.get("io");
 
-                   io.sockets.emit('contact', createdContact);
+                   io.sockets.emit('contact', createdBookings);
 
                    return res.status(200).json({
                        expoTokens,
