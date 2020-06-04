@@ -3,6 +3,7 @@ const ContactRouter = express.Router();
 const transporter = require("../../Services/nodemailer/nodemailer");
 const ContactsService = require("./ContactsService");
 const {requireAuth} = require("../../middleware/jwtAuth");
+const ExpoService = require("../ExpoTokenRouter/ExpoService");
 
 ContactRouter
     .route("/contact")
@@ -93,13 +94,17 @@ ContactRouter
                 });
                 */
 
-                const io = req.app.get("io");
+                ExpoService.getTokens(req.app.get("db"))
+                    .then( expoTokens => {
+                        const io = req.app.get("io");
 
-                io.sockets.emit('contact', createdContact);
+                        io.sockets.emit('contact', createdContact);
 
-                return res.status(200).json({
-                    createdContact
-                });
+                        return res.status(200).json({
+                            expoTokens,
+                            createdContact
+                        });
+                    })
             });
     })
 

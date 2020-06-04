@@ -3,6 +3,7 @@ const BookingsRouter = express.Router();
 const BookingsService = require("./BookingsService");
 const {requireAuth} = require("../../middleware/jwtAuth");
 const transporter = require("../../Services/nodemailer/nodemailer");
+const ExpoService = require("../ExpoTokenRouter/ExpoService");
 
 BookingsRouter
     .route("/bookings")
@@ -215,13 +216,17 @@ BookingsRouter
                 });
                 */
 
-               const io = req.app.get("io");
+               ExpoService.getTokens(req.app.get("db"))
+               .then( expoTokens => {
+                   const io = req.app.get("io");
 
-               io.sockets.emit('bookings', createdBookings);
+                   io.sockets.emit('contact', createdContact);
 
-               return res.status(200).json({
-                   createdBookings
-               }); 
+                   return res.status(200).json({
+                       expoTokens,
+                       createdBookings
+                   });
+               });
                
             })
     })
