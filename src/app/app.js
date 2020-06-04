@@ -11,6 +11,7 @@ const UserRouter = require("../routes/UserRouter/UserRouter");
 const BookingsRouter = require("../routes/BookingsRouter/BookingsRouter");
 const ContactRouter = require("../routes/ContactRouter/ContactRouter");
 const SubscribeRouter = require("../routes/SubscribeRouter/SubscribeRouter");
+const ExpoTokenRouter = require("../routes/ExpoTokenRouter/ExpoTokenRouter");
 
 app.use(morgan((NODE_ENV === "production") ? "tiny" : "common"));
 app.use(express.static("public"));
@@ -32,6 +33,7 @@ app.use("/api", UserRouter);
 app.use("/api", BookingsRouter);
 app.use("/api", ContactRouter);
 app.use("/api", SubscribeRouter);
+app.use("/api", ExpoTokenRouter);
 
 
 app.use(function errorHandler(error, req, res, next) {
