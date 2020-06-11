@@ -88,7 +88,7 @@ ContactRouter
                         };
 
                         if(secondInfo){
-                            
+                            console.log(secondInfo)
                             ExpoService.getTokens(req.app.get("db"))
                                 .then( expoTokens => {
                                     const io = req.app.get("io");
