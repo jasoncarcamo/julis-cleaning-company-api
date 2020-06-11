@@ -158,7 +158,7 @@ BookingsRouter
         BookingsService.createBookings(req.app.get("db"), newBookings)
             .then( createdBookings => {
                 
-                /*
+                
                 const clientMailOptions = {
                     from: "juliscleaningcompany@gmail.com",
                     to: newBookings.email,
@@ -215,26 +215,23 @@ BookingsRouter
                         const io = req.app.get("io");
 
                         io.sockets.emit('bookings', createdBookings);
-    
-                        return res.status(200).json({
-                            sent: secondInfo,
-                            createdBookings
-                        });    
+
+                        ExpoService.getTokens(req.app.get("db"))
+                            .then( expoTokens => {
+                                const io = req.app.get("io");
+
+                                io.sockets.emit('bookings', createdBookings);
+
+                                return res.status(200).json({
+                                    expoTokens,
+                                    createdBookings,
+                                    sent: secondInfo
+                                });
+                            });    
                     });
                 });
-                */
 
-               ExpoService.getTokens(req.app.get("db"))
-               .then( expoTokens => {
-                   const io = req.app.get("io");
-
-                   io.sockets.emit('bookings', createdBookings);
-
-                   return res.status(200).json({
-                       expoTokens,
-                       createdBookings
-                   });
-               });
+                
                
             })
     })

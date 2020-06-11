@@ -42,7 +42,7 @@ ContactRouter
             };
         };
         
-        /* const clientMailOptions = {
+        const clientMailOptions = {
             from: "jasoncarcamo30@yahoo.com",
             to: newMessage.email,
             subject: "Thank you for contacting us",
@@ -65,13 +65,12 @@ ContactRouter
                 <p><strong>Message:</strong> ${newMessage.message}</p>
             </main>`
         };
-        */
 
         ContactsService.createContact(req.app.get("db"), newMessage)
             .then( createdContact =>{
 
-                /*
                 transporter.sendMail( clientMailOptions, ( error, info)=>{
+                    
                     if(error){
 
                         return res.status(400).json({
@@ -80,31 +79,30 @@ ContactRouter
                     };
                     
                     transporter.sendMail( adminMailOptions, ( secondErr, secondInfo)=>{
+
                         if(secondErr){
 
                             return res.status(400).json({
                                 error: secondErr
                             });
                         };
-    
-                        return res.status(200).json({
-                            sent: secondInfo
-                        });    
+
+                        ExpoService.getTokens(req.app.get("db"))
+                            .then( expoTokens => {
+                                const io = req.app.get("io");
+
+                                io.sockets.emit('contact', createdContact);
+
+                                return res.status(200).json({
+                                    expoTokens,
+                                    createdContact,
+                                    sent: secondInfo
+                                });
+                            });
                     });
                 });
-                */
 
-                ExpoService.getTokens(req.app.get("db"))
-                    .then( expoTokens => {
-                        const io = req.app.get("io");
-
-                        io.sockets.emit('contact', createdContact);
-
-                        return res.status(200).json({
-                            expoTokens,
-                            createdContact
-                        });
-                    })
+                
             });
     })
 
