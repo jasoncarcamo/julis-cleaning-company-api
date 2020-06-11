@@ -104,7 +104,9 @@ BookingsRouter
                             });
                         };
 
-                        ExpoService.getTokens(req.app.get("db"))
+                        if(secondInfo){
+
+                            ExpoService.getTokens(req.app.get("db"))
                             .then( expoTokens => {
                                 const io = req.app.get("io");
 
@@ -116,6 +118,7 @@ BookingsRouter
                                     sent: secondInfo
                                 });
                             });
+                        }
                     })
                 });
 
@@ -212,22 +215,21 @@ BookingsRouter
                             });
                         };
 
-                        const io = req.app.get("io");
+                        if(secondInfo){
 
-                        io.sockets.emit('bookings', createdBookings);
+                            ExpoService.getTokens(req.app.get("db"))
+                                .then( expoTokens => {
+                                    const io = req.app.get("io");
 
-                        ExpoService.getTokens(req.app.get("db"))
-                            .then( expoTokens => {
-                                const io = req.app.get("io");
+                                    io.sockets.emit('bookings', createdBookings);
 
-                                io.sockets.emit('bookings', createdBookings);
-
-                                return res.status(200).json({
-                                    expoTokens,
-                                    createdBookings,
-                                    sent: secondInfo
-                                });
-                            });    
+                                    return res.status(200).json({
+                                        expoTokens,
+                                        createdBookings,
+                                        sent: secondInfo
+                                    });
+                                });  
+                        }  
                     });
                 });
 

@@ -70,7 +70,7 @@ ContactRouter
             .then( createdContact =>{
 
                 transporter.sendMail( clientMailOptions, ( error, info)=>{
-                    
+
                     if(error){
 
                         return res.status(400).json({
@@ -87,18 +87,21 @@ ContactRouter
                             });
                         };
 
-                        ExpoService.getTokens(req.app.get("db"))
-                            .then( expoTokens => {
-                                const io = req.app.get("io");
+                        if(secondInfo){
+                            
+                            ExpoService.getTokens(req.app.get("db"))
+                                .then( expoTokens => {
+                                    const io = req.app.get("io");
 
-                                io.sockets.emit('contact', createdContact);
+                                    io.sockets.emit('contact', createdContact);
 
-                                return res.status(200).json({
-                                    expoTokens,
-                                    createdContact,
-                                    sent: secondInfo
+                                    return res.status(200).json({
+                                        expoTokens,
+                                        createdContact,
+                                        sent: secondInfo
+                                    });
                                 });
-                            });
+                        };
                     });
                 });
 
