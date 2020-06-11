@@ -38,4 +38,22 @@ ExpoTokenRouter
 
     })
 
+ExpoTokenRouter
+    .route("/expo/:token")
+    .get((req, res)=>{
+        
+        ExpoService.getToken(req.app.get("db"), req.params.token)
+            .then( token => {
+                if(!token){
+                    return res.status(404).json({
+                        error: "Token was not found"
+                    })
+                };
+                
+                return res.status(200).json({
+                    token
+                });
+            })
+    })
+
 module.exports = ExpoTokenRouter;
